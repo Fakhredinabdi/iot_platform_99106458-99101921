@@ -1,11 +1,13 @@
-# Git Aliases برای مدیریت Pull Requestها
+# Git Commands for Managing Pull Requests
 
-## Aliasهای اصلی
+## Fetching and Checking Out Pull Requests
 
-### دریافت و چک‌اوت کردن Pull Request‌ها
+To fetch and check out a specific pull request:
 
-برای دریافت یک Pull Request مشخص به صورت محلی و سوئیچ کردن به شاخه مربوطه، از alias زیر استفاده کنید:
+1. Use the alias `fetch-pr` followed by the pull request ID. This command fetches the pull request branch and checks it out as a new local branch prefixed with `pr-`.
 
-1. **دریافت PR:**
-   ```bash
-   git pr-fetch ID
+   Example:
+```bash
+git fetch-pr 7
+```
+This command fetches the pull request with ID 7 and checks it out into a local branch named `pr-7`.
