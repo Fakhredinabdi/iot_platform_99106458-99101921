@@ -1,3 +1,3 @@
-test('adds 6 + 2 to equal 8', () => {
-  expect(6 + 2).toBe(8)
+test('adds 7 + 2 to equal 9', () => {
+  expect(7 + 2).toBe(9)
 })
