@@ -278,11 +278,99 @@ Follow the steps below to ensure proper collaboration and integration:
 ---
 
 ## Next Steps
+# پایش و گزارش خطا (Monitoring and Error Reporting)
 
-Future phases of the project will focus on:
-1. Developing functionality for IoT sensors.
-2. Building and integrating the web dashboard interface.
-3. Automating workflows via CI/CD processes.
-4. Completing subsequent milestones for module integration.
+## وظیفه
+پیکربندی اعلان‌ها یا گزارش‌دهی خطا در سیستم CI/CD به منظور اطلاع‌رسانی به تیم در موارد ایجاد خطا یا شکست‌های بیلد.
+
+## دستورالعمل‌ها
+
+### 1. تنظیم اعلان‌های ایمیلی
+- **انتخاب ابزار ایمیل:** از ابزارهایی مانند SendGrid یا سرویس‌های ایمیلی داخلی استفاده کنید.
+- **پیکربندی در CI/CD:**  
+  - اگر از GitHub Actions بهره می‌برید، می‌توانید از یک GitHub Action برای ارسال ایمیل استفاده کنید (مثل action-send-mail).
+  - در فایل workflow (.github/workflows/ci-cd.yml) یک مرحله اضافه کنید که در صورت شکست بیلد، یک ایمیل به تیم ارسال کند.
+
+**نمونه‌ای از پیکربندی ایمیل در GitHub Actions:**
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      
+      - name: Build and Test
+        run: |
+          npm install
+          npm test
+
+  notify_failure:
+    needs: build
+    if: failure() # فقط در صورت شکست بیلد اجرا می‌شود
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Failure Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.example.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "CI/CD Build Failed: Repository Name"
+          body: "سلام تیم،\n\nبیلد آخر به دلیل خطا شکست خورد. لطفاً برای بررسی وارد شوید."
+          to: team@example.com
+          from: ci@example.com
+```
+
+### 2. تنظیم اعلان‌های Slack
+- **ایجاد Webhook در Slack:** یک Slack Incoming Webhook برای کانال مورد نظر تنظیم کنید.
+- **پیکربندی در CI/CD:**  
+  - از یک Action یا اسکریپت استفاده کنید تا در صورت بروز خطا در CI/CD، پیام به کانال Slack ارسال شود.
+  - می‌توانید از Action های موجود مانند rtCamp/action-slack-notify استفاده کنید.
+
+**نمونه‌ای از پیکربندی اعلان‌های Slack:**
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      
+      - name: Build and Test
+        run: |
+          npm install
+          npm test
+
+  notify_failure_slack:
+    needs: build
+    if: failure() # فقط در صورت شکست بیلد اجرا می‌شود
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: "بیلد در مخزن شما شکست خورد. لطفاً بررسی کنید."
+```
+
+
+## پایش و گزارش خطا
+
+این پروژه از ابزارهای CI/CD برای اجرای بیلد و تست استفاده می‌کند. در صورتی که بیلد شکست بخورد، سیستم اعلان‌های زیر فعالیت می‌کند:
+- **ایمیل:** ارسال ایمیل به تیم با توضیحات خطا
+- **Slack:** ارسال پیام به کانال مشخص در Slack برای اطلاع‌رسانی سریع
+
+### روند عیب‌یابی
+
+در صورت بروز خطا، ابتدا مراحل زیر را دنبال کنید:
+1. بررسی گزارش‌های بیلد در سیستم CI/CD (لاگ‌های اجرای کارها)
+2. مشاهده پیام‌های دریافتی در ایمیل یا Slack برای شناسایی خطا
+3. مراجعه به مستندات عیب‌یابی در پوشه /docs برای جزئیات بیشتر
+4. اقدام بر اساس راهنمایی‌های مستند شده جهت رفع مشکل
+
 
 ---
