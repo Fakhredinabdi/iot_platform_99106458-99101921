@@ -82,33 +82,55 @@
 2. Run ESLint across the codebase:
    ```bash
    npx eslint .
-Fix minor lint issues automatically using:
-bash
+
+### Fix minor lint issues automatically using:
+```bash
 npx eslint . --fix
-Review any remaining ESLint warnings or errors and ensure they’re addressed.
-Look for:
-Proper formatting, consistent indentation, and spacing.
-No unused variables (no-unused-vars).
-Proper import/export usage (no-undef or import/order).
-Using Jest
-Run the Jest test suite to ensure all tests pass:
-bash
+```
+
+### Review any remaining ESLint warnings or errors and ensure they’re addressed.
+
+#### Look for:
+- Proper formatting, consistent indentation, and spacing.
+- No unused variables (`no-unused-vars`).
+- Proper import/export usage (`no-undef` or `import/order`).
+
+---
+
+### Using Jest
+
+#### Run the Jest test suite to ensure all tests pass:
+```bash
 npm test
-Review test cases for:
-Coverage: Ensure that critical paths, edge cases, and expected behaviors have sufficient tests.
-Accuracy: Verify that test assertions are meaningful and relevant.
-Structure: Ensure test files are logically grouped and well-organized (e.g., files ending in .test.js).
-Check for regressions. If new code breaks existing tests, raise this as part of the review.
-Code Review Process
-Clone and Test Code: Clone the branch locally and check that it:
-Builds/runs without errors.
-Passes all tests using Jest.
-Passes lint checks using ESLint.
-Analyze Against the Checklist: Review the code using the checklist above.
-Provide Feedback:
-Be constructive and specific. Use examples where appropriate.
-For example, instead of saying: “This is bad”, say: “Consider using a forEach() loop instead of map() here, as the return value isn’t used.”
-Approve the Pull Request: Approve it only after all necessary changes have been addressed and test cases pass.
+```
+
+#### Review test cases for:
+- **Coverage**: Ensure that critical paths, edge cases, and expected behaviors have sufficient tests.
+- **Accuracy**: Verify that test assertions are meaningful and relevant.
+- **Structure**: Ensure test files are logically grouped and well-organized (e.g., files ending in `.test.js`).
+
+#### Check for regressions:
+If new code breaks existing tests, raise this as part of the review.
+
+---
+
+### Code Review Process
+
+1. **Clone and Test Code**:
+   Clone the branch locally and check that it:
+   - Builds/runs without errors.
+   - Passes all tests using Jest.
+   - Passes lint checks using ESLint.
+
+2. **Analyze Against the Checklist**:
+   Review the code using the checklist above.
+
+3. **Provide Feedback**:
+   Be constructive and specific. Use examples where appropriate.
+   For example, instead of saying: “This is bad”, say: “Consider using a `forEach()` loop instead of `map()` here, as the return value isn’t used.”
+
+4. **Approve the Pull Request**:
+   Approve it only after all necessary changes have been addressed and test cases pass.
 
 ---
 
