@@ -133,5 +133,3 @@ If new code breaks existing tests, raise this as part of the review.
    Approve it only after all necessary changes have been addressed and test cases pass.
 
 ---
-
-You can copy and paste the above markdown code directly into a `CodeReviewGuidelines.md` file. Let me know if you need further modifications or additions!
