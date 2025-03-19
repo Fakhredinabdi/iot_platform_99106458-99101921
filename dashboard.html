@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Data Dashboard</title>
+</head>
+<body>
+    <h1>IoT Sensor Dashboard</h1>
+    <div id="sensor-data"></div>
+    <script>
+        function mockSensorData() {
+            const temperature = (Math.random() * 5 + 20).toFixed(2);
+            const humidity = (Math.random() * 20 + 30).toFixed(2);
+            return `Temperature: ${temperature} °C, Humidity: ${humidity} %`;
+        }
+
+        setInterval(() => {
+            document.getElementById('sensor-data').innerText = mockSensorData();
+        }, 2000);
+    </script>
+</body>
+</html>
