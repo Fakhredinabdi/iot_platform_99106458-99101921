@@ -277,21 +277,20 @@ Follow the steps below to ensure proper collaboration and integration:
 
 ---
 
-## Next Steps
-# پایش و گزارش خطا (Monitoring and Error Reporting)
+# Monitoring and Error Reporting
 
-## وظیفه
-پیکربندی اعلان‌ها یا گزارش‌دهی خطا در سیستم CI/CD به منظور اطلاع‌رسانی به تیم در موارد ایجاد خطا یا شکست‌های بیلد.
+## Task
+Configure notifications or error reporting in the CI/CD system to inform the team in case of errors or build failures.
 
-## دستورالعمل‌ها
+## Instructions
 
-### 1. تنظیم اعلان‌های ایمیلی
-- **انتخاب ابزار ایمیل:** از ابزارهایی مانند SendGrid یا سرویس‌های ایمیلی داخلی استفاده کنید.
-- **پیکربندی در CI/CD:**  
-  - اگر از GitHub Actions بهره می‌برید، می‌توانید از یک GitHub Action برای ارسال ایمیل استفاده کنید (مثل action-send-mail).
-  - در فایل workflow (.github/workflows/ci-cd.yml) یک مرحله اضافه کنید که در صورت شکست بیلد، یک ایمیل به تیم ارسال کند.
+### 1. Setting Up Email Notifications
+- **Choose an Email Tool:** Use tools such as SendGrid or internal email services.
+- **Configuration in CI/CD:**  
+  - If you are using GitHub Actions, you can use a GitHub Action to send an email (like action-send-mail).
+  - Add a step in the workflow file (.github/workflows/ci-cd.yml) that sends an email to the team if the build fails.
 
-**نمونه‌ای از پیکربندی ایمیل در GitHub Actions:**
+**Example of Email Configuration in GitHub Actions:**
 
 ```yaml
 jobs:
@@ -308,7 +307,7 @@ jobs:
 
   notify_failure:
     needs: build
-    if: failure() # فقط در صورت شکست بیلد اجرا می‌شود
+    if: failure() # Only runs if the build fails
     runs-on: ubuntu-latest
     steps:
       - name: Send Failure Email
@@ -319,18 +318,19 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "CI/CD Build Failed: Repository Name"
-          body: "سلام تیم،\n\nبیلد آخر به دلیل خطا شکست خورد. لطفاً برای بررسی وارد شوید."
+          body: "Hello Team,\n\nThe latest build failed due to an error. Please check for details."
           to: team@example.com
           from: ci@example.com
 ```
 
-### 2. تنظیم اعلان‌های Slack
-- **ایجاد Webhook در Slack:** یک Slack Incoming Webhook برای کانال مورد نظر تنظیم کنید.
-- **پیکربندی در CI/CD:**  
-  - از یک Action یا اسکریپت استفاده کنید تا در صورت بروز خطا در CI/CD، پیام به کانال Slack ارسال شود.
-  - می‌توانید از Action های موجود مانند rtCamp/action-slack-notify استفاده کنید.
+### Setting Up Slack Notifications
+**Create a Webhook in Slack:** Set up a Slack Incoming Webhook for the desired channel.
 
-**نمونه‌ای از پیکربندی اعلان‌های Slack:**
+**Configuration in CI/CD:**
+Use an Action or script to send a message to the Slack channel if an error occurs in CI/CD.
+You can use existing Actions like rtCamp/action-slack-notify.
+
+**Example of Slack Notification Configuration:**
 
 ```yaml
 jobs:
@@ -347,30 +347,36 @@ jobs:
 
   notify_failure_slack:
     needs: build
-    if: failure() # فقط در صورت شکست بیلد اجرا می‌شود
+    if: failure() # Only runs if the build fails
     runs-on: ubuntu-latest
     steps:
       - name: Send Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_MESSAGE: "بیلد در مخزن شما شکست خورد. لطفاً بررسی کنید."
+          SLACK_MESSAGE: "Your repository build failed. Please check."
 ```
 
 
-## پایش و گزارش خطا
+## Monitoring and Error Reporting
 
-این پروژه از ابزارهای CI/CD برای اجرای بیلد و تست استفاده می‌کند. در صورتی که بیلد شکست بخورد، سیستم اعلان‌های زیر فعالیت می‌کند:
-- **ایمیل:** ارسال ایمیل به تیم با توضیحات خطا
-- **Slack:** ارسال پیام به کانال مشخص در Slack برای اطلاع‌رسانی سریع
+This project uses CI/CD tools for running builds and tests. If the build fails, the following notification systems activate:
 
-### روند عیب‌یابی
+* **Email**: Sends an email to the team with error details.
+* **Slack**: Sends a message to a specific channel in Slack for quick notification.
 
-در صورت بروز خطا، ابتدا مراحل زیر را دنبال کنید:
-1. بررسی گزارش‌های بیلد در سیستم CI/CD (لاگ‌های اجرای کارها)
-2. مشاهده پیام‌های دریافتی در ایمیل یا Slack برای شناسایی خطا
-3. مراجعه به مستندات عیب‌یابی در پوشه /docs برای جزئیات بیشتر
-4. اقدام بر اساس راهنمایی‌های مستند شده جهت رفع مشکل
+### Troubleshooting Process
+In case of an error, follow these steps:
 
+1. Check build reports in the CI/CD system (job execution logs).
+2. Review received messages in email or Slack to identify the error.
+3. Refer to the troubleshooting documents in the /docs folder for more details.
+4. Proceed according to the documented guidelines to resolve the issue.
+
+### Related Documentation
+
+[Release Process](ReleaseProcess.md): Guidelines for tagging versions and deploying releases. This document provides detailed steps for preparing your project for a production release.
+
+[Disaster Recovery Plan](DisasterRecoveryPlan.md): Steps and strategies for rolling back to previous versions in case of deployment failures. A comprehensive plan that includes procedures for rapid recovery from various types of operational failures.
 
 ---
